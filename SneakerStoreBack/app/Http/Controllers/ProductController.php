@@ -24,17 +24,24 @@ class ProductController extends Controller
         //         LEFT JOIN product_details px on p.id = px.product_id
         //         where p.id= ' . $productId . '');
 
-        $product = DB::selectOne(
-            'select id, name, unit_price, description
-            from products where id = ' . $productId . ' ');
+        $product = DB::selectOne(DB::raw ('select id, name, unit_price, description
+            from products where id = ?'), [$productId]);
+
+        // $product = DB::selectOne(
+        //     'select id, name, unit_price, description
+        //     from products where id = ' . $productId . ' ');
         
         if (empty($product)){
             return response()->json(['message' => 'Product Not Found'], 404);
         }
+
+        $productDetails = DB::select(DB::raw ('select id product_details_id,
+        size, stock from product_details 
+        where product_id = :pId') , ['pId' => $productId]);
         
-        $productDetails = DB::select('select id product_details_id,
-            size, stock from product_details 
-            where product_id = ' . $productId . ' ');
+        // $productDetails = DB::select('select id product_details_id,
+        //     size, stock from product_details 
+        //     where product_id = ' . $productId . ' ');
         
         $productImages = DB::select('select *
             from product_images 
