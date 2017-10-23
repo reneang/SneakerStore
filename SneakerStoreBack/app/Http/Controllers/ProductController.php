@@ -86,7 +86,7 @@ class ProductController extends Controller
 
         try{
         $this->validate($req, [
-            'image'=>'required|image|mimes:jpeg,png,jpg|max:2048',
+            'image'=>'required|image|mimes:jpeg,png,jpg|max:4096',
             'product_id'=>'required'
         ]);
 
